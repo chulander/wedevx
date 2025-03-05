@@ -27,6 +27,18 @@ interface FormData {
   file: File | null;
 }
 
+// Define an error type for each field
+interface FormErrors {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  website?: string;
+  countryId?: string;
+  selectedCategories?: string;
+  details?: string;
+  file?: string;
+}
+
 export default function VisaApplicationForm({
   countries,
   categories,
@@ -42,9 +54,9 @@ export default function VisaApplicationForm({
     details: "",
     file: null,
   });
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<FormErrors>({});
 
-  // Child components will call these handlers to update the parent state
+  // Handlers for child components
   const handleAssessmentChange = (key: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
@@ -61,41 +73,104 @@ export default function VisaApplicationForm({
     setFormData((prev) => ({ ...prev, file }));
   };
 
-  // Basic validation & submission
-  const handleSubmit = () => {
-    // Simple validation: check if required fields are filled
-    const { firstName, lastName, email, countryId } = formData;
-    if (!firstName || !lastName || !email || !countryId) {
-      setError("Please fill out all required fields before submitting.");
-      return;
+  // Validation function: returns errors based on the current formData
+  const validateForm = (data: FormData): FormErrors => {
+    const newErrors: FormErrors = {};
+
+    if (!data.firstName.trim()) {
+      newErrors.firstName = "First name is required.";
+    }
+    if (!data.lastName.trim()) {
+      newErrors.lastName = "Last name is required.";
+    }
+    if (!data.email.trim()) {
+      newErrors.email = "Email is required.";
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email)) {
+        newErrors.email = "Please provide a valid email address.";
+      }
+    }
+    if (!data.website.trim()) {
+      newErrors.website = "Website is required.";
+    } else {
+      try {
+        new URL(data.website);
+      } catch {
+        newErrors.website = "Please provide a valid URL.";
+      }
+    }
+    if (!data.countryId) {
+      newErrors.countryId = "Country of Citizenship is required.";
+    }
+    if (!data.selectedCategories || data.selectedCategories.length === 0) {
+      newErrors.selectedCategories =
+        "At least one visa category must be selected.";
+    }
+    if (!data.details.trim() || data.details.trim().length < 3) {
+      newErrors.details =
+        "Please provide more details (at least 3 characters).";
+    }
+    if (!data.file) {
+      newErrors.file = "Please upload your resume/CV.";
     }
 
-    // Clear any previous error
-    setError(null);
+    return newErrors;
+  };
 
-    // TODO: Add logic to send data to your backend (e.g., fetch POST to /api/submit)
+  // Submission handler
+  const handleSubmit = () => {
+    const validationErrors = validateForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
     console.log("Submitting form data:", formData);
     alert("Form submitted successfully!");
+    // Here you would typically send formData to your API endpoint
   };
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">
-      {/* Render child components, passing callbacks & state as needed */}
+      {/* Pass errors to each child component as needed */}
       <VisaAssessmentForm
         countries={countries}
         formData={formData}
         onChange={handleAssessmentChange}
+        errors={{
+          firstName: errors.firstName,
+          lastName: errors.lastName,
+          email: errors.email,
+          website: errors.website,
+          countryId: errors.countryId,
+        }}
       />
       <VisaCategories
         categories={categories}
         selected={formData.selectedCategories}
         onChange={handleCategoriesChange}
+        error={errors.selectedCategories}
       />
-      <VisaDetails value={formData.details} onChange={handleDetailsChange} />
-      <FileUpload file={formData.file} onFileChange={handleFileChange} />
+      <VisaDetails
+        value={formData.details}
+        onChange={handleDetailsChange}
+        error={errors.details}
+      />
+      <FileUpload
+        file={formData.file}
+        onFileChange={handleFileChange}
+        error={errors.file}
+      />
 
-      {/* Error message (if any) */}
-      {error && <p className="font-semibold text-red-600">{error}</p>}
+      {/* Display a summary error message if needed */}
+      {Object.keys(errors).length > 0 && (
+        <div className="rounded-md bg-red-100 p-4">
+          <p className="font-semibold text-red-600">
+            Please fix the errors above before submitting.
+          </p>
+        </div>
+      )}
 
       {/* Black Submit Button */}
       <button

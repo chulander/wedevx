@@ -5,9 +5,9 @@ export default function ApplicationLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="">
+    <>
       <Hero />
       {children}
-    </div>
+    </>
   );
 }

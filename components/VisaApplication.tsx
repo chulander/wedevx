@@ -1,29 +1,47 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Info } from "lucide-react";
 
+// Define the shape of a Country
 interface Country {
   id: string; // e.g. "US"
   name: string; // e.g. "United States"
 }
 
+// Define the shape of the form data for this component
+export interface AssessmentData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  countryId: string;
+  website: string;
+}
+
+// Define the shape for the error messages that may be passed in
+interface FormErrors {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  website?: string;
+  countryId?: string;
+}
+
+// Props that the parent passes in
 interface VisaAssessmentFormProps {
   countries: Country[];
+  formData: AssessmentData;
+  onChange: (field: keyof AssessmentData, value: string) => void;
+  errors: FormErrors;
 }
 
 export default function VisaAssessmentForm({
   countries,
+  formData,
+  onChange,
+  errors,
 }: VisaAssessmentFormProps) {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    countryId: "",
-    website: "",
-  });
-
-  // Track whether the custom dropdown is open
+  // Local UI state for the custom dropdown
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -43,10 +61,10 @@ export default function VisaAssessmentForm({
     };
   }, []);
 
-  // Generic input change handler
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle standard text input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    onChange(name as keyof AssessmentData, value);
   };
 
   // Toggle the dropdown open/closed
@@ -54,9 +72,9 @@ export default function VisaAssessmentForm({
     setIsOpen((prev) => !prev);
   };
 
-  // Select a country
+  // When user selects a country from the dropdown
   const handleSelectCountry = (id: string) => {
-    setFormData((prev) => ({ ...prev, countryId: id }));
+    onChange("countryId", id);
     setIsOpen(false);
   };
 
@@ -67,7 +85,6 @@ export default function VisaAssessmentForm({
   return (
     <div className="flex flex-col items-center bg-white px-4 py-8">
       {/* Icon */}
-
       <Info className="mx-auto h-12 w-12 text-purple-400" />
 
       {/* Headline */}
@@ -88,10 +105,13 @@ export default function VisaAssessmentForm({
           name="firstName"
           placeholder="First Name"
           value={formData.firstName}
-          onChange={handleChange}
+          onChange={handleInputChange}
           required
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-purple-200 focus:outline-none"
         />
+        {errors.firstName && (
+          <p className="text-sm text-red-600">{errors.firstName}</p>
+        )}
 
         {/* Last Name */}
         <input
@@ -99,10 +119,13 @@ export default function VisaAssessmentForm({
           name="lastName"
           placeholder="Last Name"
           value={formData.lastName}
-          onChange={handleChange}
+          onChange={handleInputChange}
           required
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-purple-200 focus:outline-none"
         />
+        {errors.lastName && (
+          <p className="text-sm text-red-600">{errors.lastName}</p>
+        )}
 
         {/* Email */}
         <input
@@ -110,12 +133,13 @@ export default function VisaAssessmentForm({
           name="email"
           placeholder="Email"
           value={formData.email}
-          onChange={handleChange}
+          onChange={handleInputChange}
           required
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-purple-200 focus:outline-none"
         />
+        {errors.email && <p className="text-sm text-red-600">{errors.email}</p>}
 
-        {/* Custom Full-Width Select */}
+        {/* Custom Full-Width Select for Country */}
         <div className="relative" ref={dropdownRef}>
           <button
             type="button"
@@ -152,6 +176,9 @@ export default function VisaAssessmentForm({
             </ul>
           )}
         </div>
+        {errors.countryId && (
+          <p className="text-sm text-red-600">{errors.countryId}</p>
+        )}
 
         {/* LinkedIn / Personal Website */}
         <input
@@ -159,9 +186,12 @@ export default function VisaAssessmentForm({
           name="website"
           placeholder="LinkedIn / Personal Website URL"
           value={formData.website}
-          onChange={handleChange}
+          onChange={handleInputChange}
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-purple-200 focus:outline-none"
         />
+        {errors.website && (
+          <p className="text-sm text-red-600">{errors.website}</p>
+        )}
       </div>
     </div>
   );

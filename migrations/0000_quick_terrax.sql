@@ -17,14 +17,16 @@ CREATE TABLE `users` (
 	`first_name` text NOT NULL,
 	`last_name` text NOT NULL,
 	`email` text NOT NULL,
-	`password` text,
+	`password` text NOT NULL,
 	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	`updated_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `visa_applications` (
 	`id` text PRIMARY KEY NOT NULL,
-	`user_id` text NOT NULL,
+	`first_name` text NOT NULL,
+	`last_name` text NOT NULL,
+	`email` text NOT NULL,
 	`additional_details` text NOT NULL,
 	`status_id` text NOT NULL,
 	`citizenship_id` text NOT NULL,
@@ -33,7 +35,6 @@ CREATE TABLE `visa_applications` (
 	`resume_file_name` text NOT NULL,
 	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	`updated_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`status_id`) REFERENCES `application_status`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`citizenship_id`) REFERENCES `country`(`id`) ON UPDATE no action ON DELETE no action
 );

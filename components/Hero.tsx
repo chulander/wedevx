@@ -2,7 +2,7 @@ import React from "react";
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative h-[300px] w-full overflow-hidden bg-lime-100 md:h-[400px]">
+    <section className="relative w-full overflow-hidden bg-lime-100 md:h-[400px]">
       {/* Decorative Circles */}
       <div className="relative z-0 hidden md:block">
         <div className="absolute top-[-3rem] left-[-3rem] z-0 h-60 w-60 rounded-full bg-lime-300" />

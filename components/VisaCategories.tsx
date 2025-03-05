@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Dice3 } from "lucide-react";
 
 interface VisaCategory {
@@ -11,21 +11,26 @@ interface VisaCategory {
 
 interface VisaCategoryMultiSelectProps {
   categories: VisaCategory[];
+  selected: number[]; // The array of currently selected category IDs
+  onChange: (selected: number[]) => void; // Callback to update selected category IDs
+  error?: string; // Optional error message
 }
 
 export default function VisaCategoryMultiSelect({
   categories,
+  selected,
+  onChange,
+  error,
 }: VisaCategoryMultiSelectProps) {
-  // Store selected category IDs
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-
+  // Toggle a category in or out of the parent-managed "selected" array
   const handleCheckboxChange = (categoryId: number) => {
-    setSelectedCategories(
-      (prev) =>
-        prev.includes(categoryId)
-          ? prev.filter((id) => id !== categoryId) // remove if already selected
-          : [...prev, categoryId], // add if not selected
-    );
+    let updated: number[];
+    if (selected.includes(categoryId)) {
+      updated = selected.filter((id) => id !== categoryId);
+    } else {
+      updated = [...selected, categoryId];
+    }
+    onChange(updated);
   };
 
   return (
@@ -42,12 +47,10 @@ export default function VisaCategoryMultiSelect({
 
       <div className="mt-6 space-y-4">
         {categories.map((category) => {
-          const isChecked = selectedCategories.includes(category.id);
-
+          const isChecked = selected.includes(category.id);
           // If the category name is "UNKNOWN", display label as "I don't know"
           const label =
             category.name === "UNKNOWN" ? "I don't know" : category.name;
-
           return (
             <label
               key={category.id}
@@ -64,6 +67,10 @@ export default function VisaCategoryMultiSelect({
           );
         })}
       </div>
+
+      {error && (
+        <p className="mt-2 text-sm font-semibold text-red-600">{error}</p>
+      )}
     </div>
   );
 }

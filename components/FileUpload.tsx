@@ -1,14 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Upload } from "lucide-react";
 
-export default function FileUploadComponent() {
-  const [file, setFile] = useState<File | null>(null);
+interface FileUploadProps {
+  file: File | null;
+  onFileChange: (file: File | null) => void;
+  error?: string;
+}
 
+export default function FileUploadComponent({
+  file,
+  onFileChange,
+  error,
+}: FileUploadProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+      onFileChange(e.target.files[0]);
+    } else {
+      onFileChange(null);
     }
   };
 
@@ -31,6 +41,9 @@ export default function FileUploadComponent() {
           <p className="mt-2 text-gray-600">
             Selected file: <span className="font-medium">{file.name}</span>
           </p>
+        )}
+        {error && (
+          <p className="mt-2 text-sm font-semibold text-red-600">{error}</p>
         )}
       </div>
     </div>

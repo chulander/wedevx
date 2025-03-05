@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "ab68b8b6-954d-44fe-a510-f8e248ac71f9",
+  "id": "c040c783-5760-4d30-b966-ff3aed2fefb1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "country": {
@@ -119,7 +119,7 @@
           "name": "password",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "created_at": {
@@ -155,8 +155,22 @@
           "notNull": true,
           "autoincrement": false
         },
-        "user_id": {
-          "name": "user_id",
+        "first_name": {
+          "name": "first_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "email": {
+          "name": "email",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -223,19 +237,6 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "visa_applications_user_id_users_id_fk": {
-          "name": "visa_applications_user_id_users_id_fk",
-          "tableFrom": "visa_applications",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "visa_applications_status_id_application_status_id_fk": {
           "name": "visa_applications_status_id_application_status_id_fk",
           "tableFrom": "visa_applications",

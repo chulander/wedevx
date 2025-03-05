@@ -50,26 +50,29 @@ export const country = sqliteTable("country", {
 });
 
 /* -------------------------------------------------------------------------- */
-/*                                User Tables                                 */
+/*                                User Table                                  */
 /* -------------------------------------------------------------------------- */
 
-// Users Table
+// Users Table (for authentication)
 export const users = sqliteTable("users", {
   id: id(),
-  first_name: text("first_name").notNull(), // required
-  last_name: text("last_name").notNull(), // required
-  email: text("email").notNull(), // required
-  password: text("password"), // only admin will have password
+  first_name: text("first_name").notNull(),
+  last_name: text("last_name").notNull(),
+  email: text("email").notNull(),
+  password: text("password").notNull(),
   created_at: createdAt(),
   updated_at: editedAt(),
 });
 
+/* -------------------------------------------------------------------------- */
+/*                              Visa Applications Tables                      */
+/* -------------------------------------------------------------------------- */
 // Visa Application Table with Resume Upload Support
 export const visa_applications = sqliteTable("visa_applications", {
   id: id(),
-  user_id: text("user_id")
-    .notNull()
-    .references(() => users.id),
+  first_name: text("first_name").notNull(), // required
+  last_name: text("last_name").notNull(), // required
+  email: text("email").notNull(), // required
   additional_details: text("additional_details").notNull(),
   status_id: text("status_id")
     .notNull()
@@ -107,20 +110,10 @@ export const visa_applications_categories = sqliteTable(
 /*                                Relationships                               */
 /* -------------------------------------------------------------------------- */
 
-// Users -> Visa Applications (One-to-Many)
-export const usersRelations = relations(users, ({ many }) => ({
-  visaApplications: many(visa_applications),
-}));
-
-// Visa Application -> User and Categories (Many-to-One and One-to-Many via join)
-// Visa Application -> User, Status, Country, and Categories
+// Visa Application -> Status, Citizenship, and Categories
 export const visaApplicationRelations = relations(
   visa_applications,
   ({ one, many }) => ({
-    user: one(users, {
-      fields: [visa_applications.user_id],
-      references: [users.id],
-    }),
     status: one(status, {
       fields: [visa_applications.status_id],
       references: [status.id],
