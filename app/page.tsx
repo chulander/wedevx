@@ -1,6 +1,7 @@
 "use client";
-import Image from "next/image";
 
+import Hero from "@/components/Hero";
+import VisaApplication from "@/components/VisaApplication";
 import React, { useState } from "react";
 import { FileText } from "lucide-react";
 
@@ -50,18 +51,7 @@ export default function AssessmentForm({
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Hero Section */}
-      <div className="relative w-full h-72 bg-lime-100 overflow-hidden flex items-center justify-center">
-        {/* Decorative Circles (layered) */}
-        <div className="absolute top-[-3rem] left-[-3rem] w-60 h-60 bg-lime-300 rounded-full z-0"></div>
-        <div className="absolute top-[-2rem] left-[2rem] w-40 h-40 bg-lime-400 rounded-full z-0"></div>
-        <div className="absolute top-[2rem] left-[6rem] w-28 h-28 bg-lime-500 rounded-full z-0"></div>
-
-        <h1 className="relative text-3xl font-bold text-gray-800 z-10 text-center px-4">
-          Get An Assessment
-          <br />
-          Of Your Immigration Case
-        </h1>
-      </div>
+      <Hero />
 
       {/* Form Card */}
       <div className="-mt-16 max-w-xl mx-auto w-full bg-white p-8 shadow-md rounded-md z-10">
