@@ -6,11 +6,11 @@ import { eq, SQL } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 
 interface DashboardPageProps {
-  searchParams: {
+  searchParams: Promise<{
     search?: string;
     status?: string;
     page?: string;
-  };
+  }>;
 }
 
 export const metadata = {

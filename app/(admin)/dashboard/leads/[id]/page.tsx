@@ -2,17 +2,17 @@
 import { db } from "@/db/index";
 import { visa_applications, country } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
 import VisaSubmission from "@/components/VisaSubmission";
-interface LeadDetailPageProps {
-  params: { id: string };
-}
 
 export const metadata = {
   title: "Lead Detail",
 };
 
-export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
+export default async function LeadDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
 
   // Query the lead details, joining with the country table for the country name.
