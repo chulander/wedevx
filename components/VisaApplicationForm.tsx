@@ -6,6 +6,19 @@ import VisaCategories from "@/components/VisaCategories";
 import VisaDetails from "@/components/AdditionalInfo";
 import FileUpload from "@/components/FileUpload";
 
+// Client-side code example: converting file to base64 and sending it in JSON
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error);
+    reader.onload = () => {
+      // reader.result is a base64 encoded string
+      resolve(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 export interface VisaApplicationFormProps {
   countries: Array<{ id: string; name: string }>;
   categories: Array<{ id: number; name: string; description: string }>;
@@ -37,6 +50,7 @@ interface FormErrors {
   selectedCategories?: string;
   details?: string;
   file?: string;
+  general?: string;
 }
 
 export default function VisaApplicationForm({
@@ -100,6 +114,7 @@ export default function VisaApplicationForm({
         newErrors.website = "Please provide a valid URL.";
       }
     }
+    // Country is optional if desired; otherwise uncomment this:
     // if (!data.countryId) {
     //   newErrors.countryId = "Country of Citizenship is required.";
     // }
@@ -118,19 +133,65 @@ export default function VisaApplicationForm({
     return newErrors;
   };
 
-  // Submission handler
-  const handleSubmit = () => {
+  // Submission handler: validate, then send a POST request to your API endpoint
+  const handleSubmit = async () => {
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
     setErrors({});
-    console.log("Submitting form data:", formData);
-    alert("Form submitted successfully!");
-    // Here you would typically send formData to your API endpoint
-  };
 
+    // Convert file to base64 if a file is provided
+    let base64File = "";
+    if (formData.file) {
+      try {
+        base64File = await fileToBase64(formData.file);
+      } catch (error) {
+        console.error("Error converting file:", error);
+        setErrors({ general: "Error processing the file. Please try again." });
+        return;
+      }
+    }
+
+    // Prepare the payload for the API.
+    const payload = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      additional_details: formData.details,
+      status_id: "PENDING", // default status for new applications
+      citizenship_id: formData.countryId,
+      resume_blob: base64File, // file converted to base64 string
+      resume_file_type: formData.file ? formData.file.type : "",
+      resume_file_name: formData.file ? formData.file.name : "",
+      categories: formData.selectedCategories,
+      website: formData.website,
+    };
+
+    try {
+      const res = await fetch("/api/visa-applications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        setErrors({ general: errorData.error || "Submission failed." });
+        return;
+      }
+
+      const result = await res.json();
+      console.log("Submission result:", result);
+      alert("Form submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setErrors({ general: "Submission failed. Please try again later." });
+    }
+  };
   return (
     <div className="mx-auto max-w-2xl space-y-8">
       {/* Pass errors to each child component as needed */}
@@ -164,11 +225,9 @@ export default function VisaApplicationForm({
       />
 
       {/* Display a summary error message if needed */}
-      {Object.keys(errors).length > 0 && (
+      {errors.general && (
         <div className="rounded-md bg-red-100 p-4">
-          <p className="font-semibold text-red-600">
-            Please fix the errors above before submitting.
-          </p>
+          <p className="font-semibold text-red-600">{errors.general}</p>
         </div>
       )}
 
