@@ -100,9 +100,9 @@ export default function VisaApplicationForm({
         newErrors.website = "Please provide a valid URL.";
       }
     }
-    if (!data.countryId) {
-      newErrors.countryId = "Country of Citizenship is required.";
-    }
+    // if (!data.countryId) {
+    //   newErrors.countryId = "Country of Citizenship is required.";
+    // }
     if (!data.selectedCategories || data.selectedCategories.length === 0) {
       newErrors.selectedCategories =
         "At least one visa category must be selected.";

@@ -78,9 +78,7 @@ export const visa_applications = sqliteTable("visa_applications", {
     .notNull()
     .references(() => status.id),
   // Move citizenship here as a foreign key to country.id
-  citizenship_id: text("citizenship_id")
-    .notNull()
-    .references(() => country.id),
+  citizenship_id: text("citizenship_id").references(() => country.id),
   // Resume fields
   resume_blob: blob("resume_blob").notNull(),
   resume_file_type: text("resume_file_type").notNull(),
