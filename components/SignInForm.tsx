@@ -27,8 +27,10 @@ export default function SignInForm() {
       });
       const data = await res.json();
       if (!res.ok) {
+        console.log("Sign in failed:", data.error);
         setError(data.error || "Sign in failed.");
       } else {
+        console.log("Sign in successful");
         // Redirect to the dashboard or another page on success.
         router.push("/dashboard/leads");
       }
