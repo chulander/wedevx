@@ -155,6 +155,10 @@ User inputs (such as search queries) are debounced to prevent excessive API call
 
 ## Future Considerations
 
+##### Fix
+- **created_at** and **updated_at** to store value in ISO-8601 format
+  - currently storing in GMT without the timezone offset
+
 ##### Testing:
 
 - Write unit and integration tests for key components and endpoints to ensure reliability and reduce regressions.
