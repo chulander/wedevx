@@ -60,13 +60,6 @@ export default function VisaAssessmentForm({
     setIsOpen(false);
   };
 
-  // Submit the form
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Form submitted successfully!");
-  };
-
   // Determine the selected country's display name
   const selectedCountry = countries.find((c) => c.id === formData.countryId);
   const countryName = selectedCountry ? selectedCountry.name : "";
@@ -88,7 +81,7 @@ export default function VisaAssessmentForm({
       </p>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="mt-8 w-full max-w-md space-y-4">
+      <div className="mt-8 w-full max-w-md space-y-4">
         {/* First Name */}
         <input
           type="text"
@@ -169,15 +162,7 @@ export default function VisaAssessmentForm({
           onChange={handleChange}
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700 focus:ring-2 focus:ring-purple-200 focus:outline-none"
         />
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full rounded-md bg-purple-500 py-2 font-semibold text-white transition-colors hover:bg-purple-600"
-        >
-          Submit
-        </button>
-      </form>
+      </div>
     </div>
   );
 }
