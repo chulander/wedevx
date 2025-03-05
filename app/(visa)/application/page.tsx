@@ -19,7 +19,6 @@ export default async function VisaPage() {
   // Render the client form, passing the countries as props
   return (
     <div className="">
-      <Hero />
       <VisaAssessmentForm countries={countriesData} />
       <VisaCategories categories={visaCategoriesData} />
       <VisaDetails />
