@@ -7,13 +7,11 @@ import AboutApplication from "@/components/AboutApplication";
 import FileUpload from "@/components/FileUpload";
 import { useRouter } from "next/navigation";
 
-// Client-side code example: converting file to base64 and sending it in JSON
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(reader.error);
     reader.onload = () => {
-      // reader.result is a base64 encoded string
       resolve(reader.result as string);
     };
     reader.readAsDataURL(file);
@@ -60,6 +58,7 @@ export default function VisaApplicationForm({
 }: VisaApplicationFormProps) {
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
   // Centralized form data & errors
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
@@ -117,10 +116,11 @@ export default function VisaApplicationForm({
         newErrors.website = "Please provide a valid URL.";
       }
     }
-    // Country is optional if desired; otherwise uncomment this:
+    // TODO: Country is optional; otherwise uncomment this:
     // if (!data.countryId) {
     //   newErrors.countryId = "Country of Citizenship is required.";
     // }
+
     if (!data.selectedCategories || data.selectedCategories.length === 0) {
       newErrors.selectedCategories =
         "At least one visa category must be selected.";
@@ -138,6 +138,7 @@ export default function VisaApplicationForm({
 
   // Submission handler: validate, then send a POST request to your API endpoint
   const handleSubmit = async () => {
+    setIsLoading(true);
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -191,6 +192,8 @@ export default function VisaApplicationForm({
     } catch (error) {
       console.error("Error submitting form:", error);
       setErrors({ general: "Submission failed. Please try again later." });
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -235,8 +238,9 @@ export default function VisaApplicationForm({
       {/* Black Submit Button */}
       <div className="flex justify-center">
         <button
+          disabled={isLoading}
           onClick={handleSubmit}
-          className="w-full max-w-md rounded-md bg-black py-3 font-semibold text-white hover:bg-gray-900"
+          className="w-full max-w-md rounded-xl bg-black py-3 font-semibold text-white hover:bg-gray-900"
         >
           Submit
         </button>

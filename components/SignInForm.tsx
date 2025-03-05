@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function SignInForm() {
   const [email, setEmail] = useState("");
@@ -39,7 +41,10 @@ export default function SignInForm() {
 
   return (
     <div className="mx-auto max-w-lg rounded-md border p-6 shadow-md">
-      <h1 className="mb-4 text-2xl font-bold">Sign In</h1>
+      <Link href="/" className="text-md mb-8 font-bold">
+        <Logo />
+      </Link>
+      <h1 className="my-4 text-2xl font-bold">Sign In</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="mb-1 block">

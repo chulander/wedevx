@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       maxAge: 60 * 60,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Sign in error:", error);
     // If the error message indicates invalid credentials, return 401;
     // Otherwise, return a 500 for an unexpected error.

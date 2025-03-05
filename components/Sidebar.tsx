@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import Logo from "@/components/Logo";
 
 // Example navigation links
 const links = [
@@ -41,27 +42,11 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="flex w-64 flex-col bg-white px-4 py-8 text-black">
+    <aside className="flex w-64 flex-col bg-white px-4 py-8 text-black sm:min-h-screen">
       {/* Branding (Logo) */}
-      <div className="mb-8 text-2xl font-bold">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="100%"
-          height="100%"
-          viewBox="0 0 59 18"
-          fill="none"
-          preserveAspectRatio="xMidYMid meet"
-          aria-hidden="true"
-          role="img"
-        >
-          {/* Insert your existing SVG paths here */}
-          <path
-            d="M16.4837 0C16.2308 0 16.0258 0.204991 16.0258 0.45786V17.5472C16.0258 17.8001 16.2308 18.0051 16.4837 18.0051H19.2012C19.454 18.0051 19.659 17.8001 19.659 17.5472V0.45786C19.659 0.204991 19.454 0 19.2012 0H16.4837Z"
-            fill="currentColor"
-          ></path>
-          {/* ... Omitted for brevity ... */}
-        </svg>
-      </div>
+      <Link href="/" className="text-md mb-8 font-bold">
+        <Logo />
+      </Link>
 
       {/* Navigation */}
       <nav className="flex flex-col gap-4 text-lg">
@@ -91,7 +76,12 @@ export default function Sidebar() {
             <span className="font-bold">A</span> // Letter in the circle
           )}
         </div>
-        <span className="text-sm font-medium">Admin</span>
+        <span
+          onClick={handleSignOut}
+          className="cursor-pointer text-sm font-medium"
+        >
+          Admin Sign Out
+        </span>
       </div>
     </aside>
   );

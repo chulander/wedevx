@@ -48,7 +48,7 @@ export default function AboutApplication({
       <textarea
         value={localValue}
         onChange={handleChange}
-        rows={6}
+        rows={8}
         placeholder={`What is your current status and when does it expire?
 What is your past immigration history? Are you looking for long-term permanent residency 
 or short-term employment visa or both? Are there any timeline considerations?`}

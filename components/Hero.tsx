@@ -1,9 +1,20 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Hero() {
   return (
     <section className="relative w-full overflow-hidden bg-lime-100 md:h-[400px]">
-      {/* Decorative Circles */}
+      {/* Top-Right Link */}
+      <div className="absolute top-4 right-4 z-20">
+        <Link
+          href="/dashboard/leads"
+          className="rounded bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-900"
+        >
+          Go to Dashboard
+        </Link>
+      </div>
+
+      {/* Decorative Circles (for larger screens) */}
       <div className="relative z-0 hidden md:block">
         <div className="absolute top-[-3rem] left-[-3rem] z-0 h-60 w-60 rounded-full bg-lime-300" />
         <div className="absolute top-[1rem] left-[1rem] z-0 h-40 w-40 rounded-full bg-lime-400" />
