@@ -11,7 +11,7 @@ export default async function CatchAllPage({ params }: CatchAllParams) {
   // Attempted path reconstruction
   const attemptedPath = catchAll ? catchAll.join("/") : null;
   if (attemptedPath) {
-    console.error(`User tried to access: /${attemptedPath}`);
+    console.info(`User tried to access: /${attemptedPath}`);
   }
 
   redirect("/visa-applications");
