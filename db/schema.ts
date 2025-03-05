@@ -27,7 +27,8 @@ const intId = () => integer("id").primaryKey();
 
 // Visa Categories Table
 export const visa_category = sqliteTable("visa_category", {
-  id: text("id").primaryKey(),
+  id: intId(),
+  name: text("name").notNull().unique(),
   description: text("description").notNull(),
   created_at: createdAt(),
   updated_at: editedAt(),

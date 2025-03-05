@@ -6,20 +6,24 @@ import { eq } from "drizzle-orm";
 async function seedVisaCategories() {
   const categories = [
     {
-      id: "O-1",
+      id: 1,
+      name: "O-1",
       description: "Visa for individuals with extraordinary ability.",
     },
     {
-      id: "EB-1A",
+      id: 2,
+      name: "EB-1A",
       description: "Employment-based visa for extraordinary ability.",
     },
     {
-      id: "EB-2 NIW",
+      id: 3,
+      name: "EB-2 NIW",
       description:
         "Employment-based visa for professionals with advanced degrees (National Interest Waiver).",
     },
     {
-      id: "UNKNOWN",
+      id: 4,
+      name: "UNKNOWN",
       description: "Applicant is unsure of the visa category.",
     },
   ];
