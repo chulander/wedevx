@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { Heart } from "lucide-react";
 
-export default function HelpForm() {
+export default function AdditionalInfo() {
   // The debounced value we store in state
   const [details, setDetails] = useState("");
 
