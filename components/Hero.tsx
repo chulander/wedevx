@@ -13,9 +13,9 @@ export default function Hero() {
       {/* Centered Container */}
       <div className="z-10 container mx-auto flex h-full items-center justify-center px-4">
         {/* Narrower text block, left-aligned */}
-        <div className="max-w-2xl">
+        <div className="mt-4 max-w-3xl md:mt-0">
           <div className="mb-2 text-xl font-bold text-gray-800">almă</div>
-          <h1 className="text-3xl leading-tight font-bold text-gray-800 md:text-5xl">
+          <h1 className="py-4 text-3xl leading-tight font-bold text-gray-800 md:text-5xl">
             Get An Assessment
             <br />
             Of Your Immigration Case

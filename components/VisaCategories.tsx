@@ -34,14 +34,14 @@ export default function VisaCategoryMultiSelect({
   };
 
   return (
-    <div className="mx-auto max-w-md">
+    <div className="mx-auto max-w-lg">
       {/* Lucide React Icon */}
       <Dice3 className="mx-auto h-12 w-12 text-purple-400" />
 
       <h2 className="mt-4 text-center text-2xl font-semibold text-gray-800">
         Visa categories of interest?
       </h2>
-      <p className="mx-auto mt-2 max-w-md text-center text-gray-600">
+      <p className="mx-auto mt-2 max-w-lg text-center text-gray-600">
         Select all that apply
       </p>
 

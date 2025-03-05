@@ -83,7 +83,7 @@ export default function ApplicantInfo({
   const countryName = selectedCountry ? selectedCountry.name : "";
 
   return (
-    <div className="flex flex-col items-center bg-white px-4 py-8">
+    <div className="flex flex-col items-center bg-white">
       {/* Icon */}
       <Info className="mx-auto h-12 w-12 text-purple-400" />
 
@@ -91,14 +91,14 @@ export default function ApplicantInfo({
       <h2 className="mt-4 text-center text-2xl font-semibold text-gray-800">
         Want to understand your visa options?
       </h2>
-      <p className="mt-2 max-w-md text-center text-gray-600">
+      <p className="mt-2 max-w-lg text-center font-bold text-gray-600">
         Submit the form below and our team of experienced attorneys will review
         your information and send a preliminary assessment of your case based on
         your goals.
       </p>
 
       {/* Form */}
-      <div className="mt-8 w-full max-w-md space-y-4">
+      <div className="mt-8 w-full max-w-lg space-y-4">
         {/* First Name */}
         <input
           type="text"

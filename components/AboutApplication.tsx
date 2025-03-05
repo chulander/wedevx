@@ -35,7 +35,7 @@ export default function AboutApplication({
   };
 
   return (
-    <div className="mx-auto max-w-md">
+    <div className="mx-auto max-w-lg">
       {/* Icon */}
       <Heart className="mx-auto h-12 w-12 text-purple-400" />
 

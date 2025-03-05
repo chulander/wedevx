@@ -194,7 +194,7 @@ export default function VisaApplicationForm({
     }
   };
   return (
-    <div className="mx-auto max-w-2xl space-y-8">
+    <div className="mx-auto mb-8 max-w-3xl space-y-8 px-4 py-8">
       {/* Pass errors to each child component as needed */}
       <ApplicantInfo
         countries={countries}
@@ -233,12 +233,14 @@ export default function VisaApplicationForm({
       )}
 
       {/* Black Submit Button */}
-      <button
-        onClick={handleSubmit}
-        className="w-full rounded-md bg-black py-3 font-semibold text-white hover:bg-gray-900"
-      >
-        Submit
-      </button>
+      <div className="flex justify-center">
+        <button
+          onClick={handleSubmit}
+          className="w-full max-w-md rounded-md bg-black py-3 font-semibold text-white hover:bg-gray-900"
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 }
