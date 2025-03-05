@@ -1,7 +1,8 @@
 // seed.ts
+import bcrypt from "bcrypt";
 import { db } from "@/db/index"; // Adjust the path if necessary
-import { visa_category, country, status } from "@/db/schema"; // Adjust the path if necessary
-import { eq } from "drizzle-orm";
+import { visa_category, country, status, users } from "@/db/schema"; // Adjust the path if necessary
+import { eq, and } from "drizzle-orm";
 
 async function seedVisaCategories() {
   const categories = [
@@ -205,10 +206,44 @@ async function seedCountries() {
   }
 }
 
+async function seedAdmin() {
+  // Check if admin already exists based on first and last name.
+  const existingAdmin = await db
+    .select()
+    .from(users)
+    .where(and(eq(users.first_name, "admin"), eq(users.last_name, "admin")));
+
+  if (existingAdmin.length > 0) {
+    console.log("Admin already exists.");
+    return;
+  }
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash("test123", 10);
+
+  // Insert the admin user
+  await db.insert(users).values({
+    first_name: "admin",
+    last_name: "admin",
+    email: "admin@test.com",
+    password: hashedPassword,
+  });
+
+  console.log("Admin user seeded successfully.");
+}
+
+seedAdmin()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error("Error seeding admin user:", err);
+    process.exit(1);
+  });
+
 async function main() {
   await seedVisaCategories();
   await seedStatuses();
   await seedCountries();
+  await seedAdmin();
 }
 
 main()

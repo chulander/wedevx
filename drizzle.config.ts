@@ -1,6 +1,6 @@
 import "dotenv-safe/config";
 import type { Config } from "drizzle-kit";
-import { DB_CONNECTION_URL, DB_AUTH_TOKEN } from "@/utils/constant";
+import { DB_CONNECTION_URL, DB_AUTH_TOKEN } from "@/utils/constants";
 
 export default {
   schema: "./db/schema.ts",

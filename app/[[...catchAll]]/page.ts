@@ -14,7 +14,7 @@ export default async function CatchAllPage({ params }: CatchAllParams) {
     console.info(`User tried to access: /${attemptedPath}`);
   }
 
-  redirect("/visa-applications");
+  // redirect("/visa-applications");
 
   return null; // This will never be reached due to `redirect`, but is required for TypeScript.
 }

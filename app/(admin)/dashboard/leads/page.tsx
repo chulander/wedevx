@@ -82,12 +82,10 @@ export default async function DashboardPage({
       <h1 className="mb-4 text-2xl font-bold">Leads</h1>
       <LeadsTable
         data={leadsData}
-        total={total}
         page={page}
         totalPages={totalPages}
         search={searchTerm}
         status={statusFilter}
-        pageSize={pageSize}
       />
     </div>
   );

@@ -14,22 +14,18 @@ interface LeadRow {
 
 interface LeadsTableProps {
   data: LeadRow[];
-  total: number;
   page: number;
   totalPages: number;
   search: string;
   status: string;
-  pageSize: number;
 }
 
 export default function LeadsTable({
   data,
-  total,
   page,
   totalPages,
   search,
   status,
-  pageSize,
 }: LeadsTableProps) {
   console.log("what is status", status);
   const router = useRouter();
