@@ -122,13 +122,12 @@ export default function LeadsTable({
       </table>
 
       {/* Pagination Controls */}
-      {/* Pagination Controls */}
-      <div className="mt-4 flex items-center justify-end gap-4">
+      <div className="mt-4 flex items-center justify-end gap-4 hover:cursor-pointer">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setParam("page", String(page - 1))}
             disabled={page <= 1}
-            className="rounded border px-3 py-1 disabled:opacity-50"
+            className="rounded border px-3 py-1 hover:cursor-pointer disabled:opacity-50"
           >
             &lt;
           </button>
@@ -147,7 +146,7 @@ export default function LeadsTable({
                 <button
                   key={p}
                   onClick={() => setParam("page", String(p))}
-                  className={`rounded border px-3 py-1 ${
+                  className={`rounded border px-3 py-1 hover:cursor-pointer ${
                     p === page ? "bg-gray-200 font-bold" : ""
                   }`}
                 >

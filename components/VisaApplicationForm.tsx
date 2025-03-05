@@ -142,6 +142,7 @@ export default function VisaApplicationForm({
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setIsLoading(false);
       return;
     }
     setErrors({});
@@ -240,7 +241,7 @@ export default function VisaApplicationForm({
         <button
           disabled={isLoading}
           onClick={handleSubmit}
-          className="w-full max-w-md rounded-xl bg-black py-3 font-semibold text-white hover:bg-gray-900"
+          className={`w-full max-w-md rounded-xl bg-black py-3 font-semibold text-white hover:bg-gray-900 ${isLoading ? "cursor-not-allowed opacity-50" : "hover:cursor-pointer"}`}
         >
           Submit
         </button>
