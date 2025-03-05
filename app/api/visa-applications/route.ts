@@ -33,7 +33,6 @@ export async function POST(request: Request) {
     }
 
     const data = result.data;
-    console.log("what is data", data);
 
     // Insert a new visa application
     const [application] = await db

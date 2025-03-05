@@ -36,10 +36,13 @@ export async function POST(request: Request) {
     });
     return response;
   } catch (error: unknown) {
-    console.error("Sign in error:", error);
-    // If the error message indicates invalid credentials, return 401;
+    console.error("Sign in error:", error); // If the error message indicates invalid credentials, return 401;
     // Otherwise, return a 500 for an unexpected error.
-    if (error.message && error.message.includes("Invalid email or password")) {
+    console.error("Sign in error:", error);
+    if (
+      error instanceof Error &&
+      error.message.includes("Invalid email or password")
+    ) {
       return NextResponse.json(
         { error: "Invalid email or password." },
         { status: 401 },

@@ -1,6 +1,6 @@
 // app/(admin)/dashboard/[id]/page.tsx
 import { db } from "@/db/index";
-import { visa_applications, country, status } from "@/db/schema";
+import { visa_applications, country } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 import VisaSubmission from "@/components/VisaSubmission";
@@ -14,7 +14,6 @@ export const metadata = {
 
 export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
   const { id } = await params;
-  console.log("id", id);
 
   // Query the lead details, joining with the country table for the country name.
   const leadData = await db
