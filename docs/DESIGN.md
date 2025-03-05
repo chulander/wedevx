@@ -155,14 +155,17 @@ User inputs (such as search queries) are debounced to prevent excessive API call
 
 ## Future Considerations
 
-##### Scaling & Performance:
-
-- As the dataset grows, consider migrating to a more scalable database solution or adding caching layers.
-
-##### Enhanced Security:
-
-- Consider implementing refresh token rotation and more granular role-based access control.
-
 ##### Testing:
 
 - Write unit and integration tests for key components and endpoints to ensure reliability and reduce regressions.
+- Add a git precommit hook to run the linting and testing scripts.
+
+##### Enhanced Security:
+
+- Add middleware to protect the PATCH endpoint
+  - Set the **access_token** from the cookie into an Authorization header and verify it before allowing the PATCH request.
+- Implement refresh token flow and more granular role-based access control.
+
+##### Scaling & Performance:
+
+- As the dataset grows, consider migrating to a more scalable database solution or adding caching layers.
