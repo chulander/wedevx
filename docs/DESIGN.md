@@ -26,6 +26,7 @@ The Lead Management System is a web application that supports both public lead s
 - **Additional Libraries:**
   - use-debounce: To debounce rapid user input (e.g., search fields).
   - lucide-react: For modern, customizable icons.
+  - server-only: Ensure server components are only rendered on the server.
 
 ## Architectural Overview
 
