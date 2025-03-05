@@ -64,7 +64,7 @@ export default function LeadsTable({
 
   // Row click -> detail page
   function handleRowClick(id: string) {
-    router.push(`/dashboard/${id}`);
+    router.push(`/dashboard/leads/${id}`);
   }
 
   return (
@@ -127,6 +127,7 @@ export default function LeadsTable({
       </table>
 
       {/* Pagination Controls */}
+      {/* Pagination Controls */}
       <div className="mt-4 flex items-center justify-end gap-4">
         <div className="flex items-center gap-2">
           <button
@@ -134,25 +135,40 @@ export default function LeadsTable({
             disabled={page <= 1}
             className="rounded border px-3 py-1 disabled:opacity-50"
           >
-            Prev
+            &lt;
           </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-            <button
-              key={p}
-              onClick={() => setParam("page", String(p))}
-              className={`rounded border px-3 py-1 ${
-                p === page ? "bg-gray-200 font-bold" : ""
-              }`}
-            >
-              {p}
-            </button>
-          ))}
+
+          {(() => {
+            // Calculate the start and end page numbers for display.
+            let startPage = Math.max(1, page - 1);
+            let endPage = startPage + 2;
+            if (endPage > totalPages) {
+              endPage = totalPages;
+              startPage = Math.max(1, endPage - 2);
+            }
+            const pages = [];
+            for (let p = startPage; p <= endPage; p++) {
+              pages.push(
+                <button
+                  key={p}
+                  onClick={() => setParam("page", String(p))}
+                  className={`rounded border px-3 py-1 ${
+                    p === page ? "bg-gray-200 font-bold" : ""
+                  }`}
+                >
+                  {p}
+                </button>,
+              );
+            }
+            return pages;
+          })()}
+
           <button
             onClick={() => setParam("page", String(page + 1))}
             disabled={page >= totalPages}
             className="rounded border px-3 py-1 disabled:opacity-50"
           >
-            Next
+            &gt;
           </button>
         </div>
       </div>

@@ -1,7 +1,8 @@
+// app/(admin)/dashboard/leads/page.tsx
 import { db } from "@/db/index";
 import { visa_applications, country } from "@/db/schema";
 import LeadsTable from "@/components/LeadsTable";
-import { eq, like, SQL } from "drizzle-orm";
+import { eq, SQL } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 
 interface DashboardPageProps {
@@ -27,9 +28,10 @@ export default async function DashboardPage({
   const searchTerm = params.search ?? "";
   const statusFilter = params.status ?? "";
 
-  // Build array of conditions
+  // Build an array of SQL conditions.
   const conditions: SQL[] = [];
   if (searchTerm) {
+    // Filter by first_name OR country.name
     conditions.push(
       sql`(${visa_applications.first_name} LIKE ${`%${searchTerm}%`} OR ${country.name} LIKE ${`%${searchTerm}%`})`,
     );
@@ -38,13 +40,11 @@ export default async function DashboardPage({
     conditions.push(eq(visa_applications.status_id, statusFilter));
   }
 
-  // Combine conditions with AND if they exist
   const whereCondition: SQL | undefined =
     conditions.length > 0
       ? conditions.reduce((prev, curr) => sql`${prev} AND ${curr}`)
       : undefined;
 
-  // Query total count
   const totalCountResult = await db
     .select({ count: sql`COUNT(${visa_applications.id})` })
     .from(visa_applications)
@@ -53,7 +53,6 @@ export default async function DashboardPage({
   const total = Number(totalCountResult[0]?.count) || 0;
   const totalPages = Math.ceil(total / pageSize);
 
-  // Query actual rows using limit and offset, joining country to get its name
   const leads = await db
     .select({
       id: visa_applications.id,
@@ -61,7 +60,7 @@ export default async function DashboardPage({
       last_name: visa_applications.last_name,
       created_at: visa_applications.created_at,
       status_id: visa_applications.status_id,
-      countryName: country.name, // <-- we alias the country name
+      countryName: country.name,
     })
     .from(visa_applications)
     .leftJoin(country, eq(visa_applications.citizenship_id, country.id))
@@ -69,12 +68,13 @@ export default async function DashboardPage({
     .limit(pageSize)
     .offset(offset);
 
-  const leadsData = leads.map((row) => ({
-    id: row.id,
-    name: `${row.first_name} ${row.last_name}`,
-    submitted: new Date(row.created_at ?? "").toLocaleString(),
-    status: row.status_id || "PENDING",
-    country: row.countryName || "UNKNOWN", // Use the joined name
+  // Transform the data for the client component.
+  const leadsData = leads.map((lead) => ({
+    id: lead.id,
+    name: `${lead.first_name} ${lead.last_name}`,
+    submitted: new Date(lead.created_at ?? "").toLocaleString(),
+    status: lead.status_id || "PENDING",
+    country: lead.countryName || "UNKNOWN",
   }));
 
   return (

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/db/index";
+import { eq } from "drizzle-orm";
 import { visa_applications, visa_applications_categories } from "@/db/schema";
 
 // Define a Zod schema for the incoming data
@@ -69,6 +70,69 @@ export async function POST(request: Request) {
     console.error("Error submitting visa application:", error);
     return NextResponse.json(
       { error: "Error submitting visa application." },
+      { status: 500 },
+    );
+  }
+}
+
+// Define a Zod schema for the PATCH request payload
+const patchSchema = z.object({
+  id: z.string().min(1, "Application id is required"),
+});
+
+export async function PATCH(request: Request) {
+  try {
+    // Parse and validate the request body
+    const body = await request.json();
+    const result = patchSchema.safeParse(body);
+    if (!result.success) {
+      return NextResponse.json(
+        { error: result.error.flatten() },
+        { status: 400 },
+      );
+    }
+    const { id } = result.data;
+
+    // Query the application by id
+    const existingApplications = await db
+      .select()
+      .from(visa_applications)
+      .where(eq(visa_applications.id, id))
+      .limit(1);
+
+    if (existingApplications.length === 0) {
+      return NextResponse.json(
+        { error: "Application not found" },
+        { status: 404 },
+      );
+    }
+
+    const application = existingApplications[0];
+    if (application.status_id === "REACHED_OUT") {
+      return NextResponse.json(
+        { error: "Application is already in REACHED_OUT status" },
+        { status: 400 },
+      );
+    }
+
+    // Update the status to REACHED_OUT
+    const [updatedApplication] = await db
+      .update(visa_applications)
+      .set({ status_id: "REACHED_OUT" })
+      .where(eq(visa_applications.id, id))
+      .returning();
+
+    return NextResponse.json(
+      {
+        message: "Application status updated successfully",
+        updatedApplication,
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error updating application status:", error);
+    return NextResponse.json(
+      { error: "Error updating application status" },
       { status: 500 },
     );
   }
