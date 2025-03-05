@@ -33,7 +33,7 @@ export default function LeadsTable({ data }: LeadsTableProps) {
 
   // Sorting, pagination, global filter states
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(8);
   const [pageIndex, setPageIndex] = useState(0);
   const [globalFilter, setGlobalFilter] = useState("");
 
