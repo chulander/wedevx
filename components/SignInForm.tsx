@@ -31,7 +31,7 @@ export default function SignInForm() {
         setError(data.error || "Sign in failed.");
       } else {
         console.log("Sign in successful");
-        // Redirect to the dashboard or another page on success.
+        // Redirect to the dashboard
         router.push("/dashboard/leads");
       }
     } catch (err) {
