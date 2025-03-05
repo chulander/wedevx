@@ -11,6 +11,7 @@ const visaApplicationSchema = z.object({
   additional_details: z.string().min(1, "Additional details are required"),
   status_id: z.string().min(1, "Status is required"),
   citizenship_id: z.string().optional(),
+  website: z.string().url("Please provide a valid URL"),
   resume_blob: z.any(), // You may want to adjust this based on how you're sending the blob (e.g., as a base64 string)
   resume_file_type: z.string().min(1, "File type is required"),
   resume_file_name: z.string().min(1, "File name is required"),
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
     }
 
     const data = result.data;
+    console.log("what is data", data);
 
     // Insert a new visa application
     const [application] = await db
@@ -40,8 +42,9 @@ export async function POST(request: Request) {
         last_name: data.lastName,
         email: data.email,
         additional_details: data.additional_details,
+        website: data.website,
         status_id: data.status_id,
-        citizenship_id: data.citizenship_id ?? null, // Provide null if undefined
+        citizenship_id: !data.citizenship_id ? null : data.citizenship_id, // Provide null if undefined
         resume_blob: data.resume_blob,
         resume_file_type: data.resume_file_type,
         resume_file_name: data.resume_file_name,

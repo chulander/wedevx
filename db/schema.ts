@@ -73,6 +73,7 @@ export const visa_applications = sqliteTable("visa_applications", {
   first_name: text("first_name").notNull(), // required
   last_name: text("last_name").notNull(), // required
   email: text("email").notNull(), // required
+  website: text("website").notNull(), // required
   additional_details: text("additional_details").notNull(),
   status_id: text("status_id")
     .notNull()

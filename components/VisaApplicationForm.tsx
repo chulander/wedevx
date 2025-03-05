@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import VisaAssessmentForm from "@/components/VisaApplication";
+import ApplicantInfo from "@/components/ApplicantInfo";
 import VisaCategories from "@/components/VisaCategories";
-import VisaDetails from "@/components/AdditionalInfo";
+import AboutApplication from "@/components/AboutApplication";
 import FileUpload from "@/components/FileUpload";
+import { useRouter } from "next/navigation";
 
 // Client-side code example: converting file to base64 and sending it in JSON
 function fileToBase64(file: File): Promise<string> {
@@ -57,6 +58,8 @@ export default function VisaApplicationForm({
   countries,
   categories,
 }: VisaApplicationFormProps) {
+  const router = useRouter();
+
   // Centralized form data & errors
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
@@ -184,9 +187,7 @@ export default function VisaApplicationForm({
         return;
       }
 
-      const result = await res.json();
-      console.log("Submission result:", result);
-      alert("Form submitted successfully!");
+      router.push("/visa-applications/success");
     } catch (error) {
       console.error("Error submitting form:", error);
       setErrors({ general: "Submission failed. Please try again later." });
@@ -195,7 +196,7 @@ export default function VisaApplicationForm({
   return (
     <div className="mx-auto max-w-2xl space-y-8">
       {/* Pass errors to each child component as needed */}
-      <VisaAssessmentForm
+      <ApplicantInfo
         countries={countries}
         formData={formData}
         onChange={handleAssessmentChange}
@@ -213,7 +214,7 @@ export default function VisaApplicationForm({
         onChange={handleCategoriesChange}
         error={errors.selectedCategories}
       />
-      <VisaDetails
+      <AboutApplication
         value={formData.details}
         onChange={handleDetailsChange}
         error={errors.details}

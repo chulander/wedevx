@@ -10,7 +10,7 @@ interface Country {
 }
 
 // Define the shape of the form data for this component
-export interface AssessmentData {
+export interface ApplicantInfoData {
   firstName: string;
   lastName: string;
   email: string;
@@ -28,19 +28,19 @@ interface FormErrors {
 }
 
 // Props that the parent passes in
-interface VisaAssessmentFormProps {
+interface ApplicantInfoProps {
   countries: Country[];
-  formData: AssessmentData;
-  onChange: (field: keyof AssessmentData, value: string) => void;
+  formData: ApplicantInfoData;
+  onChange: (field: keyof ApplicantInfoData, value: string) => void;
   errors: FormErrors;
 }
 
-export default function VisaAssessmentForm({
+export default function ApplicantInfo({
   countries,
   formData,
   onChange,
   errors,
-}: VisaAssessmentFormProps) {
+}: ApplicantInfoProps) {
   // Local UI state for the custom dropdown
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -64,7 +64,7 @@ export default function VisaAssessmentForm({
   // Handle standard text input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    onChange(name as keyof AssessmentData, value);
+    onChange(name as keyof ApplicantInfoData, value);
   };
 
   // Toggle the dropdown open/closed

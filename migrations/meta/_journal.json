@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1741162228640,
-      "tag": "0000_quick_terrax",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1741162778565,
-      "tag": "0001_keen_shatterstar",
+      "when": 1741165916097,
+      "tag": "0000_needy_calypso",
       "breakpoints": true
     }
   ]

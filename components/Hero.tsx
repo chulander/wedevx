@@ -1,6 +1,6 @@
 import React from "react";
 
-const Hero: React.FC = () => {
+export default function Hero() {
   return (
     <section className="relative w-full overflow-hidden bg-lime-100 md:h-[400px]">
       {/* Decorative Circles */}
@@ -24,6 +24,4 @@ const Hero: React.FC = () => {
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

@@ -9,7 +9,7 @@ interface FileUploadProps {
   error?: string;
 }
 
-export default function FileUploadComponent({
+export default function FileUpload({
   file,
   onFileChange,
   error,

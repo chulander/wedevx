@@ -4,17 +4,17 @@ import React, { useState, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { Heart } from "lucide-react";
 
-interface AdditionalInfoProps {
+interface AboutApplicationProps {
   value: string;
   onChange: (value: string) => void;
   error?: string;
 }
 
-export default function AdditionalInfo({
+export default function AboutApplication({
   value,
   onChange,
   error,
-}: AdditionalInfoProps) {
+}: AboutApplicationProps) {
   // Local state to reflect immediate input changes
   const [localValue, setLocalValue] = useState(value);
 
