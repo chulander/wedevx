@@ -27,7 +27,6 @@ export default function LeadsTable({
   search,
   status,
 }: LeadsTableProps) {
-  console.log("what is status", status);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -70,7 +69,7 @@ export default function LeadsTable({
         {/* Search input */}
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Name or Country..."
           defaultValue={search}
           onChange={(e) => debouncedSetSearch(e.target.value)}
           className="rounded-md border px-3 py-2"

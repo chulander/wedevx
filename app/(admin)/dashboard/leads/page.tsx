@@ -33,7 +33,7 @@ export default async function DashboardPage({
   if (searchTerm) {
     // Filter by first_name OR country.name
     conditions.push(
-      sql`(${visa_applications.first_name} LIKE ${`%${searchTerm}%`} OR ${country.name} LIKE ${`%${searchTerm}%`})`,
+      sql`(${visa_applications.first_name} LIKE ${`%${searchTerm}%`} OR ${visa_applications.last_name} LIKE ${searchTerm} OR ${country.name} LIKE ${`%${searchTerm}%`})`,
     );
   }
   if (statusFilter) {
