@@ -1,17 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import * as Select from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
-import { FileText } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
 
-// Type for the country from the database
 interface Country {
   id: string; // e.g. "US"
   name: string; // e.g. "United States"
 }
 
-// Props passed from the server page
 interface VisaAssessmentFormProps {
   countries: Country[];
 }
@@ -23,48 +18,83 @@ export default function VisaAssessmentForm({
     firstName: "",
     lastName: "",
     email: "",
-    countryId: "", // We'll store the country 'id' here
+    countryId: "",
     website: "",
   });
 
+  // Track whether the custom dropdown is open
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown if user clicks outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   // Generic input change handler
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Radix Select change handler for the country
-  const handleCountryChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, countryId: value }));
+  // Toggle the dropdown open/closed
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
   };
 
-  // Form submission
+  // Select a country
+  const handleSelectCountry = (id: string) => {
+    setFormData((prev) => ({ ...prev, countryId: id }));
+    setIsOpen(false);
+  };
+
+  // Submit the form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here, you'd send formData to your backend
     console.log("Form submitted:", formData);
     alert("Form submitted successfully!");
   };
 
+  // Determine the selected country's display name
+  const selectedCountry = countries.find((c) => c.id === formData.countryId);
+  const countryName = selectedCountry ? selectedCountry.name : "";
+
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-white flex flex-col items-center py-8 px-4">
       {/* Icon */}
-      <FileText className="text-purple-400" size={48} />
+      <svg
+        className="text-purple-400 w-12 h-12"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        viewBox="0 0 24 24"
+      >
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
 
       {/* Headline */}
-      <h2 className="text-xl font-semibold mt-4 text-gray-800">
+      <h2 className="text-2xl font-semibold mt-4 text-gray-800 text-center">
         Want to understand your visa options?
       </h2>
-      <p className="text-center text-gray-600 max-w-md mt-2">
+      <p className="text-center text-gray-600 mt-2 max-w-md">
         Submit the form below and our team of experienced attorneys will review
         your information and send a preliminary assessment of your case based on
         your goals.
       </p>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="mt-6 w-full max-w-sm space-y-4">
+      <form onSubmit={handleSubmit} className="mt-8 w-full max-w-md space-y-4">
         {/* First Name */}
         <input
           type="text"
@@ -101,39 +131,45 @@ export default function VisaAssessmentForm({
                      focus:outline-none focus:ring-2 focus:ring-purple-200"
         />
 
-        {/* Country (Radix Select) */}
-        <Select.Root
-          value={formData.countryId}
-          onValueChange={handleCountryChange}
-        >
-          <Select.Trigger
-            className="w-full border border-gray-300 rounded-md py-2 px-3 text-gray-700
-                       flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-purple-200"
-            aria-label="Country of Citizenship"
+        {/* Custom Full-Width Select */}
+        <div className="relative" ref={dropdownRef}>
+          <button
+            type="button"
+            onClick={toggleDropdown}
+            className="w-full border border-gray-300 rounded-md py-2 px-3 text-left
+                       text-gray-700 flex items-center justify-between focus:outline-none
+                       focus:ring-2 focus:ring-purple-200"
           >
-            <Select.Value placeholder="Country of Citizenship" />
-            <Select.Icon>
-              <ChevronDownIcon />
-            </Select.Icon>
-          </Select.Trigger>
-          <Select.Content className="bg-white border border-gray-200 rounded-md shadow-md">
-            <Select.Viewport>
+            <span className={countryName ? "text-gray-700" : "text-gray-400"}>
+              {countryName || "Country of Citizenship"}
+            </span>
+            {/* Flip arrow if open */}
+            <svg
+              className={`w-5 h-5 text-gray-400 transition-transform ${
+                isOpen ? "rotate-180" : ""
+              }`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          {isOpen && (
+            <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-md mt-1 max-h-60 overflow-auto">
               {countries.map((c) => (
-                <Select.Item
+                <li
                   key={c.id}
-                  value={c.id} // The selected value is the country's ID
-                  className="cursor-pointer px-3 py-2 text-sm text-gray-700 
-                             hover:bg-purple-50 focus:bg-purple-100 flex items-center justify-between"
+                  onClick={() => handleSelectCountry(c.id)}
+                  className="px-3 py-2 text-gray-700 hover:bg-purple-50 cursor-pointer"
                 >
-                  <Select.ItemText>{c.name}</Select.ItemText>
-                  <Select.ItemIndicator>
-                    <CheckIcon className="h-4 w-4 text-purple-500" />
-                  </Select.ItemIndicator>
-                </Select.Item>
+                  {c.name}
+                </li>
               ))}
-            </Select.Viewport>
-          </Select.Content>
-        </Select.Root>
+            </ul>
+          )}
+        </div>
 
         {/* LinkedIn / Personal Website */}
         <input

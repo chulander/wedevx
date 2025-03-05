@@ -27,8 +27,7 @@ const intId = () => integer("id").primaryKey();
 
 // Visa Categories Table
 export const visa_category = sqliteTable("visa_category", {
-  id: intId(),
-  name: text("name").notNull().unique(),
+  id: text("id").primaryKey(),
   description: text("description").notNull(),
   created_at: createdAt(),
   updated_at: editedAt(),
@@ -42,15 +41,16 @@ export const status = sqliteTable("application_status", {
   updated_at: editedAt(),
 });
 
-/* -------------------------------------------------------------------------- */
-/*                                User Tables                                 */
-/* -------------------------------------------------------------------------- */
 export const country = sqliteTable("country", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   created_at: createdAt(),
   updated_at: editedAt(),
 });
+
+/* -------------------------------------------------------------------------- */
+/*                                User Tables                                 */
+/* -------------------------------------------------------------------------- */
 
 // Users Table
 export const users = sqliteTable("users", {

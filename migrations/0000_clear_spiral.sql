@@ -49,11 +49,8 @@ CREATE TABLE `visa_applications_categories` (
 );
 --> statement-breakpoint
 CREATE TABLE `visa_category` (
-	`id` integer PRIMARY KEY NOT NULL,
-	`name` text NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`description` text NOT NULL,
 	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	`updated_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
---> statement-breakpoint
-CREATE UNIQUE INDEX `visa_category_name_unique` ON `visa_category` (`name`);
